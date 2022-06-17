@@ -21,10 +21,10 @@ At first, simple algorithm without multithreading is implemented. Algorithm can 
 
 ### Binning
 
-Binning is a digital image processing method for reducing noise by improving signal-to-noise ratio. Adjacent pixels are combined into one pixel.
+Method is described in the documentation about [binning](../doc/binning.md).
 
-Few different methods for calculating combined pixel value will be implemented. 
-Possible methods are sum, average, median, minimum, maximum of adjacent pixels.
+At sum of adjacent pixels for calculating combined pixel value will be implemented. 
+Optionally, average, median, minimum, maximum of adjacent pixels could be implemented. 
 
 ### Median filtering (optional)
 
