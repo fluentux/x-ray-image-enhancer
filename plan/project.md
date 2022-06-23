@@ -30,9 +30,9 @@ Optionally, average, median, minimum, maximum of adjacent pixels could be implem
 
 Median filtering is another technique for removing noise.
 
-## Command-line interface
+## Command-line interface (optional)
 
-Simple command-line line interface will be implemented. 
+Simple command-line line interface can be implemented. 
 User can give operation type and one or multiple image files to process.
 
 Example commands:
@@ -61,7 +61,7 @@ Before starting to implement UI, an interactive mockup is created based on the u
  
 ### User interface
 - Open image files
-- Select image files
+- Select images
 - Perform enhancing operation for selected images
 - Export enhanced images
 - Undo enhancing operation for selected images (optional)
@@ -70,6 +70,31 @@ Before starting to implement UI, an interactive mockup is created based on the u
 - Reliable
 - Easy-to-use
 - Responsive
+
+## Architecture
+
+Application architecture is described in the [architecture documentation](../doc/architecture.md).
+
+## Development process
+
+Development will be done using the process described below.
+
+```mermaid
+flowchart TD
+  1([Understand domain]) --> 2
+  2([Create project plan])--> 3
+  3([Document domain])--> 4
+  4([Write use cases])--> 5
+  5([Create UI prototype])--> 6
+  6([Plan architecture])--> 7
+  7([Implement initial UI])--> 8
+  8([Implement architecture])--> 9
+  9([Write unit tests])--> 10
+  10([Implement algorithms])--> 11
+  11([Implement user stories])--> 12
+  12([Refine UI])--> 13
+  13([Test UI])--> 14([Finalize documentation])
+```
 
 ## Testing
 
@@ -91,10 +116,11 @@ User interface will be tested manually.
 
 ## Libraries
 
-- Boost (image data handling, unit testing)
+- Boost (unit testing)
+- OpenCV (image processing, image reading and writing)
 - Qt (user interface)
 
 ## Coding style
 
 - C++17 standard
-- Google C++ style guide (google.github.io/styleguide/cppguide.html)
+- C++ Core Guidelines (https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
