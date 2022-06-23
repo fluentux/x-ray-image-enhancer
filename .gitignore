@@ -1,5 +1,5 @@
-# Prerequisites
-*.d
+# CMake user text files
+*.txt.user
 
 # Compiled Object files
 *.slo
