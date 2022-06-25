@@ -2,6 +2,7 @@
 #define IMAGESTORING_IMAGEWRITER_H
 
 #include <string>
+#include <memory>
 #include "xrayimage.h"
 
 class ImageWriter {
@@ -11,7 +12,7 @@ public:
 
     }
 
-    bool write(std::string url, XrayImage<uint16_t>);
+    bool write(std::string url, std::unique_ptr<XrayImageAbstract>& image);
 };
 
 #endif // IMAGESTORING_IMAGEWRITER_H

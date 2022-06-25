@@ -1,7 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-
 #include "imagelistmodel.h"
 #include "imageprovider.h"
 #include "mainmodel.h"
@@ -18,10 +17,10 @@ int main(int argc, char *argv[])
 
     MainModel mainModel;
 
-    engine.addImageProvider(QLatin1String("colors"), new ImageProvider(&mainModel));
-    engine.rootContext()->setContextProperty(QStringLiteral("mainModelTest"), &mainModel);
+    engine.addImageProvider(QLatin1String("images"), mainModel.getImageProvider());
+    engine.rootContext()->setContextProperty(QStringLiteral("mainModelContext"), &mainModel);
 
-    engine.load(QUrl(QStringLiteral("qrc:/XRayImageEnhancer/main.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/XrayImageEnhancer/main.qml")));
 
     return app.exec();
 }

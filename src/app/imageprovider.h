@@ -2,17 +2,23 @@
 #define APP_IMAGE_PROVIDER_H
 
 #include "QQuickImageProvider"
+#include "imageitem.h"
+#include "xrayimage.h"
 
-#include "mainmodel.h"
+#include "imagereader.h"
 
 class ImageProvider : public QQuickImageProvider {
 public:
-    ImageProvider(MainModel* mainModel);
+    ImageProvider(const QVector<ImageItem>& items);
 
     QPixmap requestPixmap(const QString& id, QSize* size, const QSize& requestedSize) override;
 
+    std::unique_ptr<XrayImageAbstract> getImage(const ImageItem& imageItem);
+
 private:
-    MainModel* mainModel_;
+    QImage readImage(const ImageItem imageItem);
+
+    const QVector<ImageItem>& items_;
 };
 
 #endif // APP_IMAGE_PROVIDER_H

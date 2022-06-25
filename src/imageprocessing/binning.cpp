@@ -8,13 +8,13 @@ Binning::Binning(unsigned int blockWidth, unsigned int blockHeight)
 {
 }
 
-XrayImage<uint16_t> Binning::calculate(XrayImage<uint8_t> sourceImage)
+XrayImage<uint16_t> Binning::calculate(XrayImageAbstract& sourceImage)
 {
     int blockWidth = blockWidth_;
     int blockHeight = blockHeight_;
 
     // Create 8-bit image matrix from pixels
-    cv::Mat grayImage(sourceImage.height(), sourceImage.width(), CV_8UC1, sourceImage.pixels().data());
+    cv::Mat grayImage(sourceImage.height(), sourceImage.width(), CV_8UC1, sourceImage.getPixelData());
 
     // Convert image to 16-bit grayscale
     grayImage.convertTo(grayImage, CV_16UC1);

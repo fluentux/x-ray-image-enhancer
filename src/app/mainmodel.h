@@ -6,6 +6,7 @@
 #include <QImage>
 #include <QtQml/qqmlregistration.h>
 
+#include "imageprovider.h"
 #include "imageitem.h"
 
 class MainModel : public QObject {
@@ -14,9 +15,13 @@ class MainModel : public QObject {
 public:
     explicit MainModel(QObject* parent = nullptr);
 
+    ~MainModel();
+
     QVector<ImageItem> items() const;
 
     bool setItemAt(int index, const ImageItem& item);
+
+    ImageProvider* getImageProvider();
 
 signals:
     void preItemAppended();
@@ -33,6 +38,11 @@ public slots:
 
 private:
     QVector<ImageItem> items_;
+    ImageProvider* imageProvider_;
+
+    // Prevent copy construction and assignment
+    MainModel(const MainModel&);
+    MainModel& operator=(const MainModel &);
 };
 
 #endif // APP_MAINMODEL_H

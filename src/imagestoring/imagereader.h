@@ -2,13 +2,14 @@
 #define IMAGESTORING_IMAGEREADER_H
 
 #include <string>
+#include <memory>
 #include "xrayimage.h"
 
 class ImageReader {
 public:
     ImageReader();
 
-    XrayImage<uint8_t> read(std::string url);
+    std::unique_ptr<XrayImageAbstract> read(std::string url);
 };
 
 #endif // IMAGESTORING_IMAGEREADER_H

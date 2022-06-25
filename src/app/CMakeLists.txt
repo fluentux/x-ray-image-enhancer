@@ -13,7 +13,7 @@ qt_add_executable(xrayimageenhancer
 )
 
 qt_add_qml_module(xrayimageenhancer
-    URI XRayImageEnhancer
+    URI XrayImageEnhancer
     VERSION 1.0
     QML_FILES
         main.qml

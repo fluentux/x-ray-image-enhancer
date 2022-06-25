@@ -30,7 +30,7 @@ ApplicationWindow {
             ToolButton {
                 text: qsTr("Binning")
                 icon.name: "binning"
-                onClicked: mainModelTest.doBinning()
+                onClicked: mainModelContext.doBinning()
             }
 
             ToolButton {
@@ -42,7 +42,7 @@ ApplicationWindow {
             ToolButton {
                 text: qsTr("Remove images")
                 icon.name: "remove-images"
-                onClicked: mainModelTest.removeImages()
+                onClicked: mainModelContext.removeImages()
             }
         }
     }
@@ -55,9 +55,7 @@ ApplicationWindow {
             "Bitmap image files (*.bmp)"
         ]
         onAccepted: {
-            mainModelTest.importImages(importFileDialog.selectedFiles)
-
-            //image.source = importFileDialog.file
+            mainModelContext.importImages(importFileDialog.selectedFiles)
         }
     }
 
@@ -65,11 +63,7 @@ ApplicationWindow {
         id: exportFolderDialog
         title: "Select folder to export images"
         onAccepted: {
-
-            mainModelTest.exportImages(exportFolderDialog.selectedFolder)
-
-            //mainModel.userName = exportFolderDialog.selectedFolder
-            //console.log("Selected:" + exportFolderDialog.folder)
+            mainModelContext.exportImages(exportFolderDialog.selectedFolder)
         }
     }
 
@@ -92,46 +86,11 @@ ApplicationWindow {
         }
 
         model: ImageListModel {
-            mainModel: mainModelTest
+            mainModel: mainModelContext
         }
 
         orientation: ListView.Horizontal
 
-        //delegate: RowLayout {
-        //    width: parent.width
-
-        //    CheckBox {
-        //        checked: model.selected
-        //        onClicked: model.selected = checked
-        //    }
-
-        //    TextField {
-        //        text: model.url
-        //        Layout.fillWidth: true
-        //    }
-
-        //    Image {
-        //        id: thumbnailImage
-        //        width: 100
-        //        height: 100
-        //        //fillMode: Image.PreserveAspectFit
-        //        source: "image://colors/" + model.id
-        //    }
-        //}
-
-        //orientation: ListView.Horizontal
-        //delegate: ImageThumbnail {
-        //    required property int index
-        //    //required property QImage source
-        //    width: 150
-        //    //height: 100
-        //    text: index
-        //    function reload() {
-        //        var oldSource = source;
-        //        source = "";
-        //        source = oldSource;
-        //    }
-        //}
         delegate: Rectangle {
             id: item
             width: 150
@@ -140,7 +99,7 @@ ApplicationWindow {
             Image {
                 id: thumbnailImage
                 fillMode: Image.PreserveAspectFit
-                source: "image://colors/" + model.id
+                source: "image://images/" + model.id
             }
 
             CheckBox {

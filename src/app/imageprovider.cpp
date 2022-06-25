@@ -1,25 +1,13 @@
-
 #include <QQmlExtensionPlugin>
 #include "QQuickImageProvider"
-
 #include "imageprovider.h"
 #include "binning.h"
 #include "xrayimage.h"
 #include "imagereader.h"
 
-static QImage read_image(QList<ImageItem>::Iterator imageItem)
+ImageProvider::ImageProvider(const QVector<ImageItem>& items) :
+    QQuickImageProvider(QQuickImageProvider::Pixmap), items_(items)
 {
-    // TODO: Read image with ImageReader and do binning when needed
-
-    QImage image(imageItem->url.toLocalFile());
-
-    return image;
-}
-
-ImageProvider::ImageProvider(MainModel* mainModel) :
-    QQuickImageProvider(QQuickImageProvider::Pixmap), mainModel_(mainModel)
-{
-
 }
 
 QPixmap ImageProvider::requestPixmap(const QString& id, QSize* size, const QSize& requestedSize)
@@ -27,7 +15,7 @@ QPixmap ImageProvider::requestPixmap(const QString& id, QSize* size, const QSize
     int width = 100;
     int height = 50;
 
-    if (!mainModel_) {
+    if (items_.empty()) {
         return QPixmap();
     }
 
@@ -41,18 +29,38 @@ QPixmap ImageProvider::requestPixmap(const QString& id, QSize* size, const QSize
 
     QUuid uuid(QByteArray::fromPercentEncoding(id.toLatin1()));
 
-    auto items = mainModel_->items();
-
-    auto imageItem = std::find_if(items.begin(), items.end(), [&](ImageItem item) {
+    auto imageItem = std::find_if(items_.begin(), items_.end(), [&](ImageItem item) {
         return item.id == uuid; }
     );
 
     // Load image from url
-    if (imageItem != items.end()) {
-        QImage img = read_image(imageItem);
+    if (imageItem != items_.end()) {
+        QImage img = readImage(*imageItem);
         QPixmap modifiedImg = QPixmap::fromImage(img);
+        pixmap = QPixmap(modifiedImg.scaled(
+            QSize(100, 50), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         return modifiedImg;
     }
 
     return pixmap;
+}
+
+std::unique_ptr<XrayImageAbstract> ImageProvider::getImage(const ImageItem& imageItem)
+{
+    ImageReader imageReader;
+
+    // TODO: Cache images?
+
+    auto image = imageReader.read(imageItem.url.toLocalFile().toStdString());
+
+    return image;
+}
+
+QImage ImageProvider::readImage(const ImageItem imageItem)
+{
+    // TODO: Read image with ImageReader and do binning when needed
+
+    QImage image(imageItem.url.toLocalFile());
+
+    return image;
 }

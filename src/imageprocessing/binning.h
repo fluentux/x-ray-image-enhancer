@@ -8,7 +8,7 @@ class Binning {
 public:
     Binning(unsigned int blockWidth, unsigned int blockHeight);
 
-    XrayImage<uint16_t> calculate(XrayImage<uint8_t> sourceImage);
+    XrayImage<uint16_t> calculate(XrayImageAbstract& sourceImage);
 
 private:
     unsigned int blockWidth_;
