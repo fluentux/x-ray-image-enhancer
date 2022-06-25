@@ -2,13 +2,14 @@
 #define IMAGEPROCESSING_BINNING_H
 
 #include <cstdint>
+#include <memory>
 #include "xrayimage.h"
 
 class Binning {
 public:
     Binning(unsigned int blockWidth, unsigned int blockHeight);
 
-    XrayImage<uint16_t> calculate(XrayImageAbstract& sourceImage);
+    std::unique_ptr<XrayImage<uint16_t>> calculate(XrayImageAbstract& sourceImage);
 
 private:
     unsigned int blockWidth_;

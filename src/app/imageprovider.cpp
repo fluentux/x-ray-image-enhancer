@@ -53,6 +53,10 @@ std::unique_ptr<XrayImageAbstract> ImageProvider::getImage(const ImageItem& imag
 
     auto image = imageReader.read(imageItem.url.toLocalFile().toStdString());
 
+    // TODO: Apply binning when requested
+    //Binning binning(2, 2);
+    //auto binnedImage = binning.calculate(*image);
+
     return image;
 }
 

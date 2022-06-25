@@ -7,10 +7,7 @@
 
 class ImageWriter {
 public:
-    ImageWriter()
-    {
-
-    }
+    ImageWriter();
 
     bool write(std::string url, std::unique_ptr<XrayImageAbstract>& image);
 };

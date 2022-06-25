@@ -19,10 +19,10 @@ BOOST_AUTO_TEST_SUITE(binning_test_suite)
 
         auto binnedImage = binning.calculate(image);
 
-        auto actual = binnedImage.pixels();
+        auto actual = binnedImage->pixels();
         std::vector<uint16_t> expected = {
-          40, 40,
-          40, 40,
+          2570, 2570,
+          2570, 2570,
         };
 
         bool equal = std::equal(actual.begin(), actual.end(), expected.begin());
@@ -44,10 +44,10 @@ BOOST_AUTO_TEST_SUITE(binning_test_suite)
 
         auto binnedImage = binning.calculate(image);
 
-        auto actual = binnedImage.pixels();
+        auto actual = binnedImage->pixels();
         std::vector<uint16_t> expected = {
-          80, 80,
-          80, 80,
+          5140, 5140,
+          5140, 5140,
         };
 
         bool equal = std::equal(actual.begin(), actual.end(), expected.begin());
@@ -70,10 +70,10 @@ BOOST_AUTO_TEST_SUITE(binning_test_suite)
 
         auto binnedImage = binning.calculate(image);
 
-        auto actual = binnedImage.pixels();
+        auto actual = binnedImage->pixels();
         std::vector<uint16_t> expected = {
-          140, 220,
-          460, 540,
+          8995, 14135,
+          29555, 34695,
         };
 
         bool equal = std::equal(actual.begin(), actual.end(), expected.begin());
@@ -86,24 +86,24 @@ BOOST_AUTO_TEST_SUITE(binning_test_suite)
         Binning binning(3, 1);
 
         std::vector<uint8_t> pixels = {
-          100, 200, 100, 200, 100, 200, 100,
-          200, 100, 200, 100, 200, 100, 200,
-          100, 200, 100, 200, 100, 200, 100,
-          200, 100, 200, 100, 200, 100, 200,
-          100, 200, 100, 200, 100, 200, 100,
+          50, 100, 50, 100, 50, 100, 50,
+          100, 50, 100, 50, 100, 50, 100,
+          50, 100, 50, 100, 50, 100, 50,
+          100, 50, 100, 50, 100, 50, 100,
+          50, 100, 50, 100, 50, 100, 50,
         };
 
         XrayImage<uint8_t> image(pixels, 7, 5);
 
         auto binnedImage = binning.calculate(image);
 
-        auto actual = binnedImage.pixels();
+        auto actual = binnedImage->pixels();
         std::vector<uint16_t> expected = {
-          400, 500, 300,
-          500, 400, 600,
-          400, 500, 300,
-          500, 400, 600,
-          400, 500, 300,
+          17133, 21417, 12850,
+          21417, 17133, 25700,
+          17133, 21417, 12850,
+          21417, 17133, 25700,
+          17133, 21417, 12850,
         };
 
         bool equal = std::equal(actual.begin(), actual.end(), expected.begin());

@@ -8,7 +8,7 @@ Binning can be used for reducing noise by improving signal-to-noise ratio.
 An example of binning with 2x2 adjacent pixels is shown in the image below. 
 The source image has gray-scale pixel values. A mask of size 2x2 is moved through the image pixels and 
 pixels inside the mask are used for calculating the combined pixel value. In the example, we calculate 
-the sum of all pixel values.
+the average of all pixel values. The calculated average pixel values are rounded to nearest integer.
 
 ![Binning](binning.svg)
 
