@@ -1,8 +1,10 @@
 #include <QUrl>
 #include <QUuid>
+#include <memory>
 #include "mainmodel.h"
 #include "imageitem.h"
 #include "imagewriter.h"
+#include "binning.h"
 
 MainModel::MainModel(QObject *parent)
     : QObject{parent}
@@ -56,7 +58,12 @@ void MainModel::exportImages(QUrl url)
 
 void MainModel::doBinning()
 {
-    // TODO: Do binning
+    for (auto& imageItem : items_) {
+        if (imageItem.selected) {
+            auto binningPointer = QSharedPointer<Binning>(new Binning(2, 2));
+            imageItem.enhancements.append(binningPointer);
+        }
+    }
 }
 
 QVector<ImageItem> MainModel::items() const

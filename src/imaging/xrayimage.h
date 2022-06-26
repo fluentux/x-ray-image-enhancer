@@ -11,10 +11,10 @@ enum class XrayImageFormat {
 
 class XrayImageAbstract {
 public:
-    virtual XrayImageFormat getFormat() = 0;
+    virtual const XrayImageFormat getFormat() = 0;
     virtual void* getPixelData() = 0;
-    virtual int width() = 0;
-    virtual int height() = 0;
+    virtual const int width() = 0;
+    virtual const int height() = 0;
     virtual ~XrayImageAbstract() {};
 };
 
@@ -26,7 +26,7 @@ public:
     {
     }
 
-    XrayImageFormat getFormat() {
+    const XrayImageFormat getFormat() {
         return sizeof(GrayPixel) == sizeof(std::uint8_t) ?
                     XrayImageFormat::Gray8 : XrayImageFormat::Gray16;
     }
@@ -36,8 +36,8 @@ public:
     }
 
     std::vector<GrayPixel> pixels() { return pixels_; }
-    int width() { return w_; }
-    int height() { return h_; }
+    const int width() { return w_; }
+    const int height() { return h_; }
 
 private:
     std::vector<GrayPixel> pixels_;

@@ -17,9 +17,9 @@ BOOST_AUTO_TEST_SUITE(binning_test_suite)
 
         XrayImage<uint8_t> image(pixels, 4, 4);
 
-        auto binnedImage = binning.calculate(image);
+        auto binnedImage = binning.execute(image);
 
-        auto actual = binnedImage->pixels();
+        auto actual = dynamic_cast<XrayImage<uint16_t>&>(*binnedImage).pixels();
         std::vector<uint16_t> expected = {
           2570, 2570,
           2570, 2570,
@@ -42,9 +42,9 @@ BOOST_AUTO_TEST_SUITE(binning_test_suite)
 
         XrayImage<uint8_t> image(pixels, 3, 3);
 
-        auto binnedImage = binning.calculate(image);
+        auto binnedImage = binning.execute(image);
 
-        auto actual = binnedImage->pixels();
+        auto actual = dynamic_cast<XrayImage<uint16_t>&>(*binnedImage).pixels();
         std::vector<uint16_t> expected = {
           5140, 5140,
           5140, 5140,
@@ -68,9 +68,9 @@ BOOST_AUTO_TEST_SUITE(binning_test_suite)
 
         XrayImage<uint8_t> image(pixels, 4, 4);
 
-        auto binnedImage = binning.calculate(image);
+        auto binnedImage = binning.execute(image);
 
-        auto actual = binnedImage->pixels();
+        auto actual = dynamic_cast<XrayImage<uint16_t>&>(*binnedImage).pixels();
         std::vector<uint16_t> expected = {
           8995, 14135,
           29555, 34695,
@@ -95,9 +95,9 @@ BOOST_AUTO_TEST_SUITE(binning_test_suite)
 
         XrayImage<uint8_t> image(pixels, 7, 5);
 
-        auto binnedImage = binning.calculate(image);
+        auto binnedImage = binning.execute(image);
 
-        auto actual = binnedImage->pixels();
+        auto actual = dynamic_cast<XrayImage<uint16_t>&>(*binnedImage).pixels();
         std::vector<uint16_t> expected = {
           17133, 21417, 12850,
           21417, 17133, 25700,

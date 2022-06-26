@@ -10,16 +10,22 @@ Binning::Binning(unsigned int blockWidth, unsigned int blockHeight)
 {
 }
 
-std::unique_ptr<XrayImage<uint16_t>> Binning::calculate(XrayImageAbstract& sourceImage)
+std::unique_ptr<XrayImageAbstract> Binning::execute(XrayImageAbstract& sourceImage)
 {
     int blockWidth = blockWidth_;
     int blockHeight = blockHeight_;
 
-    // Create 8-bit image matrix from pixels
-    cv::Mat grayImage(sourceImage.height(), sourceImage.width(), CV_8UC1, sourceImage.getPixelData());
+    auto sourceImageFormat = sourceImage.getFormat() == XrayImageFormat::Gray8 ? CV_8UC1 : CV_16UC1;
 
-    // Convert image to 16-bit grayscale. Scale pixel values from [0,255] to range [0,65535]
-    grayImage.convertTo(grayImage, CV_16UC1, 257);
+    // Create image matrix from pixels
+    cv::Mat grayImage(sourceImage.height(), sourceImage.width(),
+                      sourceImageFormat, sourceImage.getPixelData());
+
+    // Convert 8-bit grayscale image to 16-bit
+    // Scale pixel values from [0,255] to range [0,65535]
+    if (sourceImageFormat == CV_8UC1) {
+        grayImage.convertTo(grayImage, CV_16UC1, 257);
+    }
 
     // Calculate required padding to the image to get full blocks
     int bottomPadding = 0;

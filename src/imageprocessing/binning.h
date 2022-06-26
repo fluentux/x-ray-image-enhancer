@@ -3,13 +3,14 @@
 
 #include <cstdint>
 #include <memory>
+#include "imageenhancement.h"
 #include "xrayimage.h"
 
-class Binning {
+class Binning : public ImageEnhancement {
 public:
     Binning(unsigned int blockWidth, unsigned int blockHeight);
 
-    std::unique_ptr<XrayImage<uint16_t>> calculate(XrayImageAbstract& sourceImage);
+    std::unique_ptr<XrayImageAbstract> execute(XrayImageAbstract& sourceImage);
 
 private:
     unsigned int blockWidth_;

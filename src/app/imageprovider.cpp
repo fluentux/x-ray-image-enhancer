@@ -53,17 +53,15 @@ std::unique_ptr<XrayImageAbstract> ImageProvider::getImage(const ImageItem& imag
 
     auto image = imageReader.read(imageItem.url.toLocalFile().toStdString());
 
-    // TODO: Apply binning when requested
-    //Binning binning(2, 2);
-    //auto binnedImage = binning.calculate(*image);
+    for (auto& enhancement : imageItem.enhancements) {
+        image = enhancement->execute(*image);
+    }
 
     return image;
 }
 
 QImage ImageProvider::readImage(const ImageItem imageItem)
 {
-    // TODO: Read image with ImageReader and do binning when needed
-
     QImage image(imageItem.url.toLocalFile());
 
     return image;
