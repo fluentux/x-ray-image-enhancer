@@ -6,26 +6,22 @@
 #include "imagereader.h"
 
 ImageProvider::ImageProvider(const QVector<ImageItem>& items) :
-    QQuickImageProvider(QQuickImageProvider::Pixmap), items_(items)
+    QQuickImageProvider(QQuickImageProvider::Image), items_(items)
 {
 }
 
-QPixmap ImageProvider::requestPixmap(const QString& id, QSize* size, const QSize& requestedSize)
+QImage ImageProvider::requestImage(const QString& id, QSize* size, const QSize& requestedSize)
 {
-    int width = 100;
-    int height = 50;
-
     if (items_.empty()) {
-        return QPixmap();
+        return QImage();
     }
 
+    int defaultWidth = 100;
+    int defaultHeight = 100;
     if (size)
     {
-        *size = QSize(width, height);
+        *size = QSize(defaultWidth, defaultHeight);
     }
-
-    QPixmap pixmap(requestedSize.width() > 0 ? requestedSize.width() : width,
-                   requestedSize.height() > 0 ? requestedSize.height() : height);
 
     QUuid uuid(QByteArray::fromPercentEncoding(id.toLatin1()));
 
@@ -33,18 +29,13 @@ QPixmap ImageProvider::requestPixmap(const QString& id, QSize* size, const QSize
         return item.id == uuid; }
     );
 
-    // Load image from url
     if (imageItem != items_.end()) {
         auto image = getImage(*imageItem);
-        QImage img = convertToQImage(*image);
-        QPixmap modifiedImg = QPixmap::fromImage(img);
-        //pixmap = QPixmap(modifiedImg.scaled(
-        //    QSize(100, 50), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        pixmap = QPixmap(modifiedImg);
-        return modifiedImg;
+        auto qImage = convertToQImage(*image);
+        return qImage;
     }
 
-    return pixmap;
+    return QImage();
 }
 
 std::unique_ptr<XrayImageAbstract> ImageProvider::getImage(const ImageItem& imageItem)

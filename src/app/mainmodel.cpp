@@ -28,7 +28,7 @@ void MainModel::importImages(QList<QUrl> urls)
         ImageItem imageItem;
         imageItem.id = QUuid::createUuid();
         imageItem.url = url;
-        imageItem.selected = true;
+        imageItem.selected = false;
 
         emit preItemAppended();
 
@@ -61,13 +61,16 @@ void MainModel::exportImages(QUrl url)
 
 void MainModel::doBinning()
 {
+    int index = 0;
     for (auto& imageItem : items_) {
-        if (!imageItem.selected)
-            continue;
-
-        auto binningPointer = QSharedPointer<Binning>(new Binning(2, 2));
-        imageItem.enhancements.append(binningPointer);
-        emit updateImage(imageItem.id);
+        if (imageItem.selected) {
+            auto binningPointer = QSharedPointer<Binning>(new Binning(2, 2));
+            imageItem.enhancements.append(binningPointer);
+            imageItem.selected = false;
+            emit updateItem(index);
+            emit updateImage(imageItem.id);
+        }
+        index++;
     }
 }
 

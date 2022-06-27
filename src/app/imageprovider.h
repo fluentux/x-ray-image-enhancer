@@ -11,7 +11,7 @@ class ImageProvider : public QQuickImageProvider {
 public:
     ImageProvider(const QVector<ImageItem>& items);
 
-    QPixmap requestPixmap(const QString& id, QSize* size, const QSize& requestedSize) override;
+    QImage requestImage(const QString& id, QSize* size, const QSize& requestedSize) override;
 
     std::unique_ptr<XrayImageAbstract> getImage(const ImageItem& imageItem);
 

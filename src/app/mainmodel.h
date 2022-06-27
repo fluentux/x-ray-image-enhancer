@@ -29,6 +29,7 @@ signals:
     void preItemRemoved(int index);
     void postItemRemoved();
 
+    void updateItem(int index);
     void updateImage(QUuid id);
 
 public slots:

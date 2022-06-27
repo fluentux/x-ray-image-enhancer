@@ -108,6 +108,9 @@ void ImageListModel::setMainModel(MainModel* mainModel)
         connect(mainModel_, &MainModel::postItemRemoved, this, [=]() {
             endRemoveRows();
         });
+        connect(mainModel_, &MainModel::updateItem, this, [=](int i) {
+            emit dataChanged(index(i), index(i));
+        });
     }
 
     endResetModel();
