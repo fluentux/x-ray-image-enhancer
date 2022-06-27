@@ -35,10 +35,12 @@ QPixmap ImageProvider::requestPixmap(const QString& id, QSize* size, const QSize
 
     // Load image from url
     if (imageItem != items_.end()) {
-        QImage img = readImage(*imageItem);
+        auto image = getImage(*imageItem);
+        QImage img = convertToQImage(*image);
         QPixmap modifiedImg = QPixmap::fromImage(img);
-        pixmap = QPixmap(modifiedImg.scaled(
-            QSize(100, 50), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        //pixmap = QPixmap(modifiedImg.scaled(
+        //    QSize(100, 50), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        pixmap = QPixmap(modifiedImg);
         return modifiedImg;
     }
 
@@ -60,9 +62,38 @@ std::unique_ptr<XrayImageAbstract> ImageProvider::getImage(const ImageItem& imag
     return image;
 }
 
-QImage ImageProvider::readImage(const ImageItem imageItem)
+QImage ImageProvider::convertToQImage(XrayImageAbstract& image)
 {
-    QImage image(imageItem.url.toLocalFile());
+    auto format = image.getFormat() == XrayImageFormat::Gray8 ?
+                QImage::Format::Format_Grayscale8 : QImage::Format::Format_Grayscale16;
 
-    return image;
+    QImage qImage(image.width(), image.height(), format);
+
+    const auto totalPixels = image.width() * image.height();
+
+    // TODO: Use image->getPixelData() instead rather than casts
+
+    if (image.getFormat() == XrayImageFormat::Gray8) {
+        auto d = reinterpret_cast<uint8_t*> (qImage.bits());
+        auto t = dynamic_cast<XrayImage<uint8_t>&>(image);
+        auto pixels = t.pixels();
+        for(int i = 0; i < totalPixels; i++) {
+            d[i] = pixels[i];
+        }
+
+        return qImage;
+    }
+
+    if (image.getFormat() == XrayImageFormat::Gray16) {
+        auto d = reinterpret_cast<quint16*>(qImage.bits());
+        auto t = dynamic_cast<XrayImage<uint16_t>&>(image);
+        auto pixels = t.pixels();
+        for(int i = 0; i < totalPixels; i++) {
+            d[i] = pixels[i];
+        }
+
+        return qImage;
+    }
+
+    return QImage();
 }

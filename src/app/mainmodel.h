@@ -5,7 +5,6 @@
 #include <QUrl>
 #include <QImage>
 #include <QtQml/qqmlregistration.h>
-
 #include "imageprovider.h"
 #include "imageitem.h"
 
@@ -29,6 +28,8 @@ signals:
 
     void preItemRemoved(int index);
     void postItemRemoved();
+
+    void updateImage(QUuid id);
 
 public slots:
     void importImages(QList<QUrl> files);

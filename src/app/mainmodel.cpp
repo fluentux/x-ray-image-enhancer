@@ -41,6 +41,9 @@ void MainModel::importImages(QList<QUrl> urls)
 void MainModel::exportImages(QUrl url)
 {
     for (auto& imageItem : items_) {
+        if (!imageItem.selected)
+            continue;
+
         auto image = imageProvider_->getImage(imageItem);
 
         std::string fullname = imageItem.url.fileName().toStdString();
@@ -59,10 +62,12 @@ void MainModel::exportImages(QUrl url)
 void MainModel::doBinning()
 {
     for (auto& imageItem : items_) {
-        if (imageItem.selected) {
-            auto binningPointer = QSharedPointer<Binning>(new Binning(2, 2));
-            imageItem.enhancements.append(binningPointer);
-        }
+        if (!imageItem.selected)
+            continue;
+
+        auto binningPointer = QSharedPointer<Binning>(new Binning(2, 2));
+        imageItem.enhancements.append(binningPointer);
+        emit updateImage(imageItem.id);
     }
 }
 
@@ -77,8 +82,6 @@ bool MainModel::setItemAt(int index, const ImageItem& item)
         return false;
 
     const ImageItem& oldItem = items_.at(index);
-    if (item.id == oldItem.id)
-        return false;
 
     items_[index] = item;
 

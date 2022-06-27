@@ -16,7 +16,7 @@ public:
     std::unique_ptr<XrayImageAbstract> getImage(const ImageItem& imageItem);
 
 private:
-    QImage readImage(const ImageItem imageItem);
+    QImage convertToQImage(XrayImageAbstract& image);
 
     const QVector<ImageItem>& items_;
 };

@@ -75,15 +75,19 @@ ApplicationWindow {
     }
 
     ListView {
-        implicitWidth: 100
+        //implicitWidth: 100
         implicitHeight: 100
         clip: true
 
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-        }
+        // Testing with full-size image
+        anchors.fill: parent
+
+        // Get smaller thumbnail images in the bottom
+        //anchors {
+        //    left: parent.left
+        //    right: parent.right
+        //    bottom: parent.bottom
+        //}
 
         model: ImageListModel {
             mainModel: mainModelContext
@@ -100,10 +104,29 @@ ApplicationWindow {
                 id: thumbnailImage
                 fillMode: Image.PreserveAspectFit
                 source: "image://images/" + model.id
+
+                Connections {
+                    target: mainModelContext
+                    function onUpdateImage(id) {
+                        if (model.id === id) {
+                            thumbnailImage.source = "image://images/" + model.id + Date.now()
+                        }
+                    }
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        selectedCheckBox.checked = !selectedCheckBox.checked
+                        model.selected = selectedCheckBox.checked
+                    }
+                }
             }
 
             CheckBox {
-                checked: true
+                id: selectedCheckBox
+                checked: model.selected
+                onClicked: model.selected = checked
             }
         }
     }
