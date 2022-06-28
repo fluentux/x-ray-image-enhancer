@@ -66,7 +66,6 @@ void MainModel::doBinning()
         if (imageItem.selected) {
             auto binningPointer = QSharedPointer<Binning>(new Binning(2, 2));
             imageItem.enhancements.append(binningPointer);
-            imageItem.selected = false;
             emit updateItem(index);
             emit updateImage(imageItem.id);
         }

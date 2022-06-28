@@ -18,6 +18,8 @@ qt_add_qml_module(xrayimageenhancer
     QML_FILES
         main.qml
     SOURCES
+        imagefilterproxymodel.h
+        imagefilterproxymodel.cpp
         imagelistmodel.h
         imagelistmodel.cpp
     RESOURCES

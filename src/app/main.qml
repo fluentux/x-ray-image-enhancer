@@ -5,8 +5,6 @@ import QtQuick.Layouts
 import QtQuick.Controls.Material 2.0
 import XRayImageEnhancer;
 
-import ImageList 1.0;
-
 ApplicationWindow {
     id: mainWindow
     width: 800
@@ -29,7 +27,7 @@ ApplicationWindow {
 
             Rectangle {
                id: logo
-               width: 50
+               width: 55
                height: 50
                color: "#444343"
             }
@@ -90,23 +88,60 @@ ApplicationWindow {
         }
     }
 
-    Image {
-        id: mainImage
+    GridView {
+        id: imageGridView
+        width: 500
+        height: 500
+
+        clip: true
+
         anchors {
             top: parent.top
             left: leftButtonPanel.right
             right: parent.right
-            bottom: thumbnailListView.top
-            bottomMargin: 5
-            topMargin: 5
+            bottom: thumbnailImageListView.top
+            margins: 5
         }
-        fillMode: Image.PreserveAspectFit
-        asynchronous: true
-        source: ""
+
+        model: imageFilterProxyModelContext
+
+        cellWidth: imageGridView.width / 2
+        cellHeight: imageGridView.height / 2
+
+        delegate: Rectangle {
+            id: imageItem
+
+            color: "#262626"
+
+            property int margin: 5
+
+            x: margin
+            y: margin
+            width: imageGridView.cellWidth - margin
+            height: imageGridView.cellHeight - margin
+
+            Image {
+                id: image
+                fillMode: Image.PreserveAspectFit
+                source: "image://images/" + model.id
+                anchors.centerIn: parent
+                width: parent.width
+                height: parent.height
+
+                Connections {
+                    target: mainModelContext
+                    function onUpdateImage(id) {
+                        if (model.id === id) {
+                            image.source = "image://images/" + model.id + Date.now()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     ListView {
-        id: thumbnailListView
+        id: thumbnailImageListView
         height: 100
         clip: true
 
@@ -119,18 +154,16 @@ ApplicationWindow {
             rightMargin: 5
         }
 
-        model: ImageListModel {
-            mainModel: mainModelContext
-        }
-
+        model: imageListModelContext
         orientation: ListView.Horizontal
-
         spacing: 5
 
         delegate: Rectangle {
-            id: item
+            id: imageThumbnailItem
             width: 150
             height: 100
+
+            color: "#262626"
 
             Image {
                 id: thumbnailImage
@@ -159,8 +192,6 @@ ApplicationWindow {
                 anchors.fill: parent
                 onClicked: {
                     model.selected = !selectedCheckBox.checked
-
-                    mainImage.source = thumbnailImage.source + Date.now()
                 }
             }
         }
