@@ -35,8 +35,10 @@ signals:
 public slots:
     void importImages(QList<QUrl> files);
     void exportImages(QUrl folder);
-    void doBinning();
     void removeImages();
+    void resetChanges();
+
+    void doBinning();
 
 private:
     QVector<ImageItem> items_;

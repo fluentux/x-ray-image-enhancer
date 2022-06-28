@@ -49,6 +49,12 @@ ApplicationWindow {
                 icon.name: "remove-images"
                 onClicked: mainModelContext.removeImages()
             }
+
+            ToolButton {
+                text: qsTr("Reset changes")
+                icon.name: "reset-changes"
+                onClicked: mainModelContext.resetChanges()
+            }
         }
     }
 
@@ -105,8 +111,11 @@ ApplicationWindow {
 
         model: imageFilterProxyModelContext
 
-        cellWidth: imageGridView.width / 2
-        cellHeight: imageGridView.height / 2
+        property int rowCount: count > 1 ? 2 : 1
+        property int columnCount: count > 2 ? 2 : 1
+
+        cellWidth: imageGridView.width / rowCount
+        cellHeight: imageGridView.height / columnCount
 
         delegate: Rectangle {
             id: imageItem

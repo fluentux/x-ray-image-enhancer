@@ -22,6 +22,23 @@ ImageProvider* MainModel::getImageProvider()
     return imageProvider_;
 }
 
+QVector<ImageItem> MainModel::items() const
+{
+    return items_;
+}
+
+bool MainModel::setItemAt(int index, const ImageItem& item)
+{
+    if (index < 0 || index >= items_.size())
+        return false;
+
+    const ImageItem& oldItem = items_.at(index);
+
+    items_[index] = item;
+
+    return true;
+}
+
 void MainModel::importImages(QList<QUrl> urls)
 {
     for (auto& url : urls) {
@@ -59,6 +76,32 @@ void MainModel::exportImages(QUrl url)
     }
 }
 
+void MainModel::removeImages()
+{
+    for (int i = 0; i < items_.size(); ) {
+        if (items_.at(i).selected) {
+            emit preItemRemoved(i);
+            items_.removeAt(i);
+            emit postItemRemoved();
+        } else {
+            i++;
+        }
+    }
+}
+
+void MainModel::resetChanges()
+{
+    int index = 0;
+    for (auto& imageItem : items_) {
+        if (imageItem.selected) {
+            imageItem.enhancements.clear();
+            emit updateItem(index);
+            emit updateImage(imageItem.id);
+        }
+        index++;
+    }
+}
+
 void MainModel::doBinning()
 {
     int index = 0;
@@ -70,35 +113,5 @@ void MainModel::doBinning()
             emit updateImage(imageItem.id);
         }
         index++;
-    }
-}
-
-QVector<ImageItem> MainModel::items() const
-{
-    return items_;
-}
-
-bool MainModel::setItemAt(int index, const ImageItem& item)
-{
-    if (index < 0 || index >= items_.size())
-        return false;
-
-    const ImageItem& oldItem = items_.at(index);
-
-    items_[index] = item;
-
-    return true;
-}
-
-void MainModel::removeImages()
-{
-    for (int i = 0; i < items_.size(); ) {
-        if (items_.at(i).selected) {
-            emit preItemRemoved(i);
-            items_.removeAt(i);
-            emit postItemRemoved();
-        } else {
-            i++;
-        }
     }
 }
