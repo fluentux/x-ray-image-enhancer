@@ -23,6 +23,13 @@ qt_add_qml_module(xrayimageenhancer
         imagelistmodel.h
         imagelistmodel.cpp
     RESOURCES
+        img/x.png
+        img/import.png
+        img/export.png
+        img/remove.png
+        img/reset.png
+        img/binning.png
+        img/check.png
 )
 
 target_link_libraries(xrayimageenhancer PRIVATE Qt6::Gui Qt6::Quick imaging imageprocessing imagestoring)

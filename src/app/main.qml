@@ -9,8 +9,12 @@ ApplicationWindow {
     id: mainWindow
     width: 800
     height: 600
+    minimumWidth: 300
+    minimumHeight: 100
     visible: true
     title: qsTr("X-ray Image Enhancer")
+
+    Material.theme: Material.Dark
 
     background: Rectangle {
         color: "#444343"
@@ -28,32 +32,45 @@ ApplicationWindow {
             Rectangle {
                id: logo
                width: 55
-               height: 50
-               color: "#444343"
+               height: 55
+               color: "#333232"
+               Image {
+                   id: logoImage
+                   source: "img/x.png"
+                   anchors.centerIn: parent
+               }
             }
 
             ToolButton {
-                text: qsTr("Import images")
-                icon.name: "import-images"
+                text: qsTr("Import")
+                icon.name: "import"
+                icon.source: "img/import.png"
                 onClicked: importFileDialog.open()
+                display: AbstractButton.TextUnderIcon
             }
 
             ToolButton {
-                text: qsTr("Export images")
-                icon.name: "export-images"
+                text: qsTr("Export")
+                icon.name: "export"
+                icon.source: "img/export.png"
                 onClicked: exportFolderDialog.open()
+                display: AbstractButton.TextUnderIcon
             }
 
             ToolButton {
-                text: qsTr("Remove images")
-                icon.name: "remove-images"
+                text: qsTr("Remove")
+                icon.name: "remove"
+                icon.source: "img/remove.png"
                 onClicked: mainModelContext.removeImages()
+                display: AbstractButton.TextUnderIcon
             }
 
             ToolButton {
-                text: qsTr("Reset changes")
-                icon.name: "reset-changes"
+                text: qsTr("Reset")
+                icon.name: "reset"
+                icon.source: "img/reset.png"
                 onClicked: mainModelContext.resetChanges()
+                display: AbstractButton.TextUnderIcon
             }
         }
     }
@@ -64,13 +81,16 @@ ApplicationWindow {
         anchors.bottom: parent.bottom
         width: 55
         color: "#303030"
+        Material.foreground: "white"
+        Material.background: "#444343"
+        Material.accent: "#303030"
 
         ToolButton {
-            x: 0
-            y: 30
+            id: binningButton
             text: qsTr("Binning")
-            icon.name: "binning"
+            icon.source: "img/binning.png"
             onClicked: mainModelContext.doBinning()
+            display: AbstractButton.TextUnderIcon
         }
     }
 
@@ -195,6 +215,36 @@ ApplicationWindow {
             CheckBox {
                 id: selectedCheckBox
                 checked: model.selected
+                visible: model.selected
+
+                indicator: Rectangle {
+                  implicitWidth: 16
+                  implicitHeight: 16
+                  x: 2
+                  y: 2
+                  radius: 4
+
+                  color: selectedCheckBox.down ? selectedCheckBox.palette.light : selectedCheckBox.palette.base
+                  border.width: selectedCheckBox.visualFocus ? 2 : 1
+                  border.color: selectedCheckBox.visualFocus ? selectedCheckBox.palette.highlight : selectedCheckBox.palette.mid
+
+                  ColorImage {
+                      x: 2
+                      y: 2
+                      defaultColor: "#353637"
+                      color: "black"
+                      source: "img/check.png"
+                      visible: selectedCheckBox.checkState === Qt.Checked
+                  }
+                  Rectangle {
+                      x: 2
+                      y: 2
+                      width: 16
+                      height: 3
+                      color: selectedCheckBox.palette.text
+                      visible: selectedCheckBox.checkState === Qt.PartiallyChecked
+                  }
+              }
             }
 
             MouseArea {
