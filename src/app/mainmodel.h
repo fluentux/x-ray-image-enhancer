@@ -8,6 +8,8 @@
 #include "imageprovider.h"
 #include "imageitem.h"
 
+// Model containing main application logic
+// Handles communication between the view and other models.
 class MainModel : public QObject {
     Q_OBJECT
     QML_ELEMENT
@@ -31,6 +33,9 @@ signals:
 
     void updateItem(int index);
     void updateImage(QUuid id);
+
+    void showMessage(QString message);
+    void showError(QString errorMessage);
 
 public slots:
     void importImages(QList<QUrl> files);

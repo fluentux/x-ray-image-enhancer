@@ -3,6 +3,7 @@
 #include "imageprovider.h"
 #include "binning.h"
 #include "imagereader.h"
+#include "imagereaderexception.h"
 #include "xrayimage.h"
 
 ImageProvider::ImageProvider(const QVector<ImageItem>& items) :
@@ -30,12 +31,18 @@ QImage ImageProvider::requestImage(const QString& id, QSize* size, const QSize& 
     );
 
     if (imageItem != items_.end()) {
-        auto image = getImage(*imageItem);
-        if (image->getFormat() == XrayImageFormat::Gray8) {
-            return convertToQImage<quint8>(*image);
-        }
-        if (image->getFormat() == XrayImageFormat::Gray16) {
-            return convertToQImage<quint16>(*image);
+        try {
+            auto image = getImage(*imageItem);
+            if (image->getType() == XrayImageType::Gray8) {
+                return convertToQImage<quint8>(*image);
+            }
+            if (image->getType() == XrayImageType::Gray16) {
+                return convertToQImage<quint16>(*image);
+            }
+        } catch (ImageReaderException) {
+            QImage errorImage(1, 1, QImage::Format_RGB16);
+            errorImage.fill(Qt::red);
+            return errorImage;
         }
     }
 
@@ -58,7 +65,7 @@ std::unique_ptr<XrayImageAbstract> ImageProvider::getImage(const ImageItem& imag
 template <typename QPixelType>
 QImage ImageProvider::convertToQImage(XrayImageAbstract& image)
 {
-    auto format = image.getFormat() == XrayImageFormat::Gray8 ?
+    auto format = image.getType() == XrayImageType::Gray8 ?
                 QImage::Format::Format_Grayscale8 : QImage::Format::Format_Grayscale16;
 
     QImage qImage(image.width(), image.height(), format);

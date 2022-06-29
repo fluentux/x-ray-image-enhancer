@@ -5,6 +5,8 @@
 
 #include "mainmodel.h"
 
+// Image list handler which allows showing and updating list of images
+// in the view
 class ImageListModel : public QAbstractListModel {
     Q_OBJECT
     Q_PROPERTY(MainModel* mainModel READ mainModel WRITE setMainModel)

@@ -15,15 +15,17 @@ Imaging module contains domain objects related to imaging.
 
 Layer: Domain
 
+Abstract class for X-ray image defines common properties for images with different bit depths. Two implementations of the abstract class are 8-bit X-ray image and 16-bit X-ray image.
+
+XrayImageFormat enum class defines 8-bit and 16-bit grayscale image formats.
+
 ```mermaid
 classDiagram
-  class XrayImage {
-    +vector<GrayPixel> pixels()
+  class XrayImageAbstract {
+    +XrayImageFormat getFormat()
+    +void* getPixelData()
     +uint width()
     +uint height()
-    -vector<GrayPixel> pixels
-    -uint width uint
-    -uint height
   }
 ```
 
@@ -33,11 +35,22 @@ Image processing module contains algorithms for enhancing images.
 
 Layer: Service
 
+Abstract class for image enhancements allows implementing different types of image processing operations.
+
+```mermaid
+classDiagram
+  class ImageEnhancement {
+    +XrayImageAbstract execute(XrayImageAbstract image)
+  }
+```
+
+Binning class implements ImageEnhancement abstraction.
+
 ```mermaid
 classDiagram
   class Binning {
     +Binning(uint blockWidth, uint blockHeight)
-    +XrayImage calculate(XrayImage image)
+    +XrayImageAbstract execute(XrayImageAbstract image)
     -uint blockWidth
     -uint blockHeight
   }
@@ -61,7 +74,7 @@ classDiagram
 classDiagram
   class ImageWriter {
     +ImageWriter()
-    +bool write(string url, XRayImage image)
+    +void write(XRayImage image, string url)
   }
 ```
 
@@ -71,55 +84,29 @@ User interface contains view for the application.
 
 Layer: Presentation
 
-```mermaid
-classDiagram
-  class ImageItem {
-    +QUuid id
-    +QUrl url
-    +bool selected
-  }
-```
+## ImageItem
 
-```mermaid
-classDiagram
-  class ImageListModel {
-    +int rowCount(QModelIndex parent)
-    +QVariant data(QModelIndex index, int role)
-    +bool setData(QModelIndex index, QVariant value, int role)
-    +ItemFlags flags(QModelIndex index)
-    +QHash<int, QByteArray> rolenames()
-    +MainModel mainModel()
-    +setMainModel(MainModel mainModel)
-    -MainModel mainModel
-  }
-```
+Contains data about each loaded image.
+- ID of the image
+- Original location of the image as URL
+- Selected status
+- Image enhancements applied to image
 
-```mermaid
-classDiagram
-  class ImageProvider {
-    +ImageProvider(MainModel mainModel)
-    +QPixmap requestPixmap(Qstring id, QSize size, QSize requestedSize)
-    -MainModel mainModel
-  }
-```
+## ImageListModel
 
-```mermaid
-classDiagram
-  class MainModel {
-    +MainModel(QObject parent)
-    +QVector<ImageItem> items()
-    +bool setItemAt(int index, ImageItem item)
-    +preItemAppended()
-    +postItemAppended()
-    +preItemRemoved(int index)
-    +postItemRemoved()
-    +importImages(QList<QUrl> files)
-    +exportImages(QUrl folder)
-    +doBinning()
-    +removeImages()
-    -QVector<ImageItem> items
-  }
-```
+Abstract list model which handles image item list to be used in view.
+
+## ImageFilterProxyModel
+
+Model for filtering images for the view.
+
+## ImageProvider
+
+Provides images for the user interface and exporting as requested. 
+
+## MainModel
+
+Handles main application logic.
 
 ### Unit tests (tests)
 

@@ -5,6 +5,8 @@
 #include <memory>
 #include "xrayimage.h"
 
+// File reader for the X-ray images. Different bit depth images are
+// recognized and read as either 8-bit or 16-bit images.
 class ImageReader {
 public:
     ImageReader();

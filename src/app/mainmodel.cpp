@@ -4,6 +4,8 @@
 #include "mainmodel.h"
 #include "imageitem.h"
 #include "imagewriter.h"
+#include "imagewriterexception.h"
+#include "imagereaderexception.h"
 #include "binning.h"
 
 MainModel::MainModel(QObject *parent)
@@ -41,6 +43,7 @@ bool MainModel::setItemAt(int index, const ImageItem& item)
 
 void MainModel::importImages(QList<QUrl> urls)
 {
+    int importCount = 0;
     for (auto& url : urls) {
         ImageItem imageItem;
         imageItem.id = QUuid::createUuid();
@@ -52,27 +55,44 @@ void MainModel::importImages(QList<QUrl> urls)
         items_.append(imageItem);
 
         emit postItemAppended();
+
+        importCount++;
     }
 }
 
 void MainModel::exportImages(QUrl url)
 {
+    ImageWriter imageWriter;
+
+    int exportCount = 0;
+    int failureCount = 0;
     for (auto& imageItem : items_) {
         if (!imageItem.selected)
             continue;
 
-        auto image = imageProvider_->getImage(imageItem);
+        try {
+            auto image = imageProvider_->getImage(imageItem);
 
-        std::string fullname = imageItem.url.fileName().toStdString();
-        size_t lastindex = fullname.find_last_of(".");
-        std::string rawname = fullname.substr(0, lastindex);
+            auto writeUrl = url.toString() + "/" +
+                imageItem.url.fileName().section(".", 0, 0) +
+                ".png";
 
-        std::string imageExtension = ".png";
-        std::string imageUrl = url.toLocalFile().toStdString() +
-                "/" + rawname + imageExtension;
+            imageWriter.write(image, writeUrl.toStdString());
+            exportCount++;
+        }
+        catch (ImageReaderException) {
+            failureCount++;
+        }
+        catch (ImageWriterException) {
+            failureCount++;
+        }
+    }
 
-        ImageWriter imageWriter;
-        imageWriter.write(imageUrl, image);
+    QString s = exportCount > 1 ? "s" : "";
+    if (failureCount > 0) {
+        emit showError(QString("Failed to export %1 image%2").arg(failureCount).arg(s));
+    } else {
+        emit showMessage(QString("Exported %1 image%2").arg(exportCount).arg(s));
     }
 }
 

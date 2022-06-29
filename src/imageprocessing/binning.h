@@ -6,6 +6,8 @@
 #include "imageenhancement.h"
 #include "xrayimage.h"
 
+// Binning image processing method.
+// Calculates combined pixel values for specific size of image blocks.
 class Binning : public ImageEnhancement {
 public:
     Binning(unsigned int blockWidth, unsigned int blockHeight);

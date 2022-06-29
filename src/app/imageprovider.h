@@ -7,6 +7,7 @@
 
 #include "imagereader.h"
 
+// Image provider used for retrieving images for the view and exporting
 class ImageProvider : public QQuickImageProvider {
 public:
     ImageProvider(const QVector<ImageItem>& items);

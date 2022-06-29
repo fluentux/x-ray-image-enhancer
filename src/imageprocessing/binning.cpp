@@ -10,20 +10,25 @@ Binning::Binning(unsigned int blockWidth, unsigned int blockHeight)
 {
 }
 
+// Binning algorithm. Image is divided into blocks of NxN pixels and
+// average value of the each pixel block is calculated.
+// A new image is created from the average pixel values.
+// For calculation, image borders are padded with replicated pixels when necessary.
+// Either 8-bit or 16-bit image can be given as input.
 std::unique_ptr<XrayImageAbstract> Binning::execute(XrayImageAbstract& sourceImage)
 {
     int blockWidth = blockWidth_;
     int blockHeight = blockHeight_;
 
-    auto sourceImageFormat = sourceImage.getFormat() == XrayImageFormat::Gray8 ? CV_8UC1 : CV_16UC1;
+    auto sourceImageType = sourceImage.getType() == XrayImageType::Gray8 ? CV_8UC1 : CV_16UC1;
 
     // Create image matrix from pixels
     cv::Mat grayImage(sourceImage.height(), sourceImage.width(),
-                      sourceImageFormat, sourceImage.getPixelData());
+                      sourceImageType, sourceImage.getPixelData());
 
     // Convert 8-bit grayscale image to 16-bit
     // Scale pixel values from [0,255] to range [0,65535]
-    if (sourceImageFormat == CV_8UC1) {
+    if (sourceImageType == CV_8UC1) {
         grayImage.convertTo(grayImage, CV_16UC1, 257);
     }
 
@@ -47,7 +52,7 @@ std::unique_ptr<XrayImageAbstract> Binning::execute(XrayImageAbstract& sourceIma
         for (int col = 0; col <= paddedGrayImage.cols - blockWidth; col += blockWidth) {
             cv::Rect block(col, row, blockWidth, blockHeight);
             auto mean = cv::mean(paddedGrayImage(block));
-            auto pixelValue = (uint16_t) round(mean[0]);
+            auto pixelValue = static_cast<uint16_t>(round(mean[0]));
             binnedImagePixels.at(index++) = pixelValue;
         }
     }

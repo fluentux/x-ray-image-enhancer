@@ -1,5 +1,5 @@
 
-find_package(OpenCV REQUIRED HINTS C:/opencv-build )
+find_package(OpenCV REQUIRED HINTS C:/opencv )
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 add_library(imageprocessing SHARED

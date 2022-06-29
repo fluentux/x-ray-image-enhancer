@@ -1,4 +1,5 @@
 #include "imagereader.h"
+#include "imagereaderexception.h"
 #include "xrayimage.h"
 #include <opencv2/imgcodecs.hpp>
 
@@ -10,19 +11,17 @@ std::unique_ptr<XrayImageAbstract> ImageReader::read(std::string url)
 {
     cv::Mat image = cv::imread(url, cv::IMREAD_GRAYSCALE);
 
-    if (image.depth() == CV_8U) {
-        std::vector<uint8_t> pixels(image.rows * image.cols * image.channels());
-        pixels.assign(image.data, image.data + image.total() * image.channels());
+    if (image.empty()) {
+        throw ImageReaderException("Failed to read image");
+    }
 
-        XrayImage<uint8_t> xRayImage(pixels, image.cols, image.rows);
+    if (image.depth() == CV_8U) {
+        XrayImage<uint8_t> xRayImage(image.data, image.cols, image.rows);
         return std::make_unique<XrayImage<uint8_t>>(xRayImage);
     }
 
     if (image.depth() == CV_16U) {
-        std::vector<uint16_t> pixels(image.rows * image.cols * image.channels());
-        pixels.assign(image.data, image.data + image.total() * image.channels());
-
-        XrayImage<uint16_t> xRayImage(pixels, image.cols, image.rows);
+        XrayImage<uint16_t> xRayImage(image.data, image.cols, image.rows);
         return std::make_unique<XrayImage<uint16_t>>(xRayImage);
     }
 

@@ -6,6 +6,7 @@
 #include <QSharedPointer>
 #include "imageenhancement.h"
 
+// Information about for single image item
 struct ImageItem {
     QUuid id;
     QUrl url;

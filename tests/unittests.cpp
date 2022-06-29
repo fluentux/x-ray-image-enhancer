@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_SUITE(xrayimage_test_suite)
         BOOST_TEST(image.pixels().size() == 8);
     }
 
-    BOOST_AUTO_TEST_CASE(format_of_8_bit_x_ray_image_is_gray8)
+    BOOST_AUTO_TEST_CASE(type_of_8_bit_x_ray_image_is_gray8)
     {
         std::vector<uint8_t> pixels = {
             255, 0, 255, 255,
@@ -149,10 +149,10 @@ BOOST_AUTO_TEST_SUITE(xrayimage_test_suite)
 
         XrayImage<uint8_t> image(pixels, 4, 3);
 
-        BOOST_CHECK(image.getFormat() == XrayImageFormat::Gray8);
+        BOOST_CHECK(image.getType() == XrayImageType::Gray8);
     }
 
-    BOOST_AUTO_TEST_CASE(format_of_16_bit_x_ray_image_is_gray16)
+    BOOST_AUTO_TEST_CASE(type_of_16_bit_x_ray_image_is_gray16)
     {
         std::vector<uint16_t> pixels = {
             65535, 0, 65535,
@@ -162,7 +162,7 @@ BOOST_AUTO_TEST_SUITE(xrayimage_test_suite)
 
         XrayImage<uint16_t> image(pixels, 3, 3);
 
-        BOOST_CHECK(image.getFormat() == XrayImageFormat::Gray16);
+        BOOST_CHECK(image.getType() == XrayImageType::Gray16);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -3,6 +3,8 @@
 
 #include <QSortFilterProxyModel>
 
+// Filter proxy model which can be used for showing only selected
+// images in the view
 class ImageFilterProxyModel : public QSortFilterProxyModel {
     Q_OBJECT
     Q_PROPERTY(int count READ rowCount NOTIFY countChanged)

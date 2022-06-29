@@ -255,4 +255,52 @@ ApplicationWindow {
             }
         }
     }
+
+    Rectangle {
+        id: messageRectangle
+        height: 25
+        opacity: 0
+        color: "white"
+        visible: opacity > 0
+        anchors {
+            top: parent.top
+            left: leftButtonPanel.right
+            right: parent.right
+        }
+
+        Text {
+            id: messageText
+            anchors.centerIn: parent
+        }
+
+        SequentialAnimation {
+            id: messageAnimation
+            running: true
+            PauseAnimation {
+                duration: 5000
+            }
+            NumberAnimation {
+                target: messageRectangle
+                property: 'opacity'
+                to: 0
+                duration: 500
+             }
+         }
+
+        Connections {
+            target: mainModelContext
+            function onShowMessage(message) {
+                messageText.text = message
+                messageText.color = "303030"
+                messageRectangle.opacity = 1
+                messageAnimation.running = true
+            }
+            function onShowError(message) {
+                messageText.text = message
+                messageText.color = "red"
+                messageRectangle.opacity = 1
+                messageAnimation.running = true
+            }
+        }
+    }
 }

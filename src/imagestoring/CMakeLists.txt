@@ -4,7 +4,7 @@
 #set(Boost_USE_STATIC_RUNTIME OFF)
 find_package(Boost CONFIG HINTS C:/Boost REQUIRED COMPONENTS )
 
-find_package(OpenCV REQUIRED HINTS C:/opencv-build )
+find_package(OpenCV REQUIRED HINTS C:/opencv)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 if(Boost_FOUND)
@@ -14,8 +14,10 @@ endif()
 
 add_library(imagestoring SHARED
     imagereader.h
+    imagereaderexception.h
     imagereader.cpp
     imagewriter.h
+    imagewriterexception.h
     imagewriter.cpp
 )
 
