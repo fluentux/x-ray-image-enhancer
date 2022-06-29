@@ -10,14 +10,14 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
+    MainModel mainModel;
+    ImageListModel imageListModel;
+    ImageFilterProxyModel imageFilterProxyModel;
+
     QQmlApplicationEngine engine;
 
     qmlRegisterUncreatableType<MainModel>("Main", 1, 0, "MainModel",
         QStringLiteral("MainModel should not be created in QML"));
-
-    MainModel mainModel;
-    ImageListModel imageListModel;
-    ImageFilterProxyModel imageFilterProxyModel;
 
     imageListModel.setMainModel(&mainModel);
     imageFilterProxyModel.setSourceModel(&imageListModel);

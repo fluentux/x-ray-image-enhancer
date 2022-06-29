@@ -4,8 +4,16 @@
 ImageFilterProxyModel::ImageFilterProxyModel(QObject* parent)
     : QSortFilterProxyModel(parent)
 {
-    // Is this needed?
+    connect(this, &QAbstractItemModel::rowsInserted, this, &ImageFilterProxyModel::countChanged);
+    connect(this, &QAbstractItemModel::rowsRemoved, this, &ImageFilterProxyModel::countChanged);
+    connect(this, &QAbstractItemModel::modelReset, this, &ImageFilterProxyModel::countChanged);
+    connect(this, &QAbstractItemModel::layoutChanged, this, &ImageFilterProxyModel::countChanged);
     setDynamicSortFilter(true);
+}
+
+int ImageFilterProxyModel::count() const
+{
+    return rowCount();
 }
 
 bool ImageFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const

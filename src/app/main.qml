@@ -9,8 +9,8 @@ ApplicationWindow {
     id: mainWindow
     width: 800
     height: 600
-    minimumWidth: 300
-    minimumHeight: 100
+    minimumWidth: 400
+    minimumHeight: 300
     visible: true
     title: qsTr("X-ray Image Enhancer")
 
@@ -47,30 +47,37 @@ ApplicationWindow {
                 icon.source: "img/import.png"
                 onClicked: importFileDialog.open()
                 display: AbstractButton.TextUnderIcon
+                width: 70
             }
 
             ToolButton {
                 text: qsTr("Export")
                 icon.name: "export"
                 icon.source: "img/export.png"
+                enabled: imageFilterProxyModelContext.count > 0
                 onClicked: exportFolderDialog.open()
                 display: AbstractButton.TextUnderIcon
+                width: 70
             }
 
             ToolButton {
                 text: qsTr("Remove")
                 icon.name: "remove"
                 icon.source: "img/remove.png"
+                enabled: imageFilterProxyModelContext.count > 0
                 onClicked: mainModelContext.removeImages()
                 display: AbstractButton.TextUnderIcon
+                width: 70
             }
 
             ToolButton {
                 text: qsTr("Reset")
                 icon.name: "reset"
                 icon.source: "img/reset.png"
+                enabled: imageFilterProxyModelContext.count > 0
                 onClicked: mainModelContext.resetChanges()
                 display: AbstractButton.TextUnderIcon
+                width: 70
             }
         }
     }
@@ -89,8 +96,11 @@ ApplicationWindow {
             id: binningButton
             text: qsTr("Binning")
             icon.source: "img/binning.png"
+            enabled: imageFilterProxyModelContext.count > 0
             onClicked: mainModelContext.doBinning()
             display: AbstractButton.TextUnderIcon
+            width: 55
+            y: 5
         }
     }
 
@@ -131,11 +141,11 @@ ApplicationWindow {
 
         model: imageFilterProxyModelContext
 
-        property int rowCount: count > 1 ? 2 : 1
-        property int columnCount: count > 2 ? 2 : 1
+        property double rowCount: count > 2 ? 2.2 : 1
+        property double columnCount: count > 1 ? 2 : 1
 
-        cellWidth: imageGridView.width / rowCount
-        cellHeight: imageGridView.height / columnCount
+        cellWidth: imageGridView.width / columnCount
+        cellHeight: imageGridView.height / rowCount
 
         delegate: Rectangle {
             id: imageItem
@@ -191,7 +201,6 @@ ApplicationWindow {
             id: imageThumbnailItem
             width: 150
             height: 100
-
             color: "#262626"
 
             Image {
@@ -215,40 +224,31 @@ ApplicationWindow {
             CheckBox {
                 id: selectedCheckBox
                 checked: model.selected
-                visible: model.selected
 
                 indicator: Rectangle {
-                  implicitWidth: 16
-                  implicitHeight: 16
-                  x: 2
-                  y: 2
-                  radius: 4
+                    id: checkBoxRectangle
+                    implicitWidth: 16
+                    implicitHeight: 16
+                    x: 2
+                    y: 2
+                    radius: 4
+                    border.color: selectedCheckBox.hovered ? "#ccffff" : "black"
+                    visible: thumbnailImageMouseArea.containsMouse ? true : model.selected
 
-                  color: selectedCheckBox.down ? selectedCheckBox.palette.light : selectedCheckBox.palette.base
-                  border.width: selectedCheckBox.visualFocus ? 2 : 1
-                  border.color: selectedCheckBox.visualFocus ? selectedCheckBox.palette.highlight : selectedCheckBox.palette.mid
-
-                  ColorImage {
-                      x: 2
-                      y: 2
-                      defaultColor: "#353637"
-                      color: "black"
-                      source: "img/check.png"
-                      visible: selectedCheckBox.checkState === Qt.Checked
-                  }
-                  Rectangle {
-                      x: 2
-                      y: 2
-                      width: 16
-                      height: 3
-                      color: selectedCheckBox.palette.text
-                      visible: selectedCheckBox.checkState === Qt.PartiallyChecked
-                  }
-              }
+                    ColorImage {
+                        x: 2
+                        y: 2
+                        color: "black"
+                        source: "img/check.png"
+                        visible: selectedCheckBox.checked
+                    }
+                }
             }
 
             MouseArea {
+                id: thumbnailImageMouseArea
                 anchors.fill: parent
+                hoverEnabled: true
                 onClicked: {
                     model.selected = !selectedCheckBox.checked
                 }
