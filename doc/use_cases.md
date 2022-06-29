@@ -31,13 +31,17 @@ Scenarios
 >
 >  A. Invalid file format
 >
->    1. System informs which images were invalid and guides the user to import only 8-bit gray-scale images
+>    1. System informs which images were invalid
 
 **2. System views the images**
 
 **3. User selects the images to be enhanced**
 
 **4. User selects an image enhancing operation to be performed for the selected images**
+>
+>  A. No images selected
+>
+>    1. Image enhancing is not allowed
 
 **5. System processes the operation for the selected images**
 
@@ -45,7 +49,7 @@ Scenarios
 >
 >  A. No images selected
 >
->    1. System exports all images
+>    1. Exporting is not allowed
 
 **7. User chooses to export the enhanced images to a selected destination**
 

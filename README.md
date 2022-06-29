@@ -4,7 +4,20 @@
 
 ![Screenshot](doc/screenshot.png)
 
-Library dependencies
-- Boost 
-- OpenCV
-- Qt
+## Platforms
+
+The application is developed with Qt as cross-platform desktop application.
+
+## Library dependencies
+
+For compiling, the libraries listed belowe are required. 
+Application is developed using these versions.
+
+- Boost 1.79
+- OpenCV 4.6.0
+- Qt 6.3 (open-source)
+
+## Resources
+
+- Fonts are free icons from https://fontawesome.com/
+- Sample images are from https://stock.adobe.com/
