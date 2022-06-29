@@ -88,11 +88,13 @@ void MainModel::exportImages(QUrl url)
         }
     }
 
-    QString s = exportCount > 1 ? "s" : "";
+
     if (failureCount > 0) {
-        emit showError(QString("Failed to export %1 image%2").arg(failureCount).arg(s));
+        emit showError(QString("Failed to export %1 image%2").arg(
+                           failureCount).arg(failureCount > 1 ? "s" : ""));
     } else {
-        emit showMessage(QString("Exported %1 image%2").arg(exportCount).arg(s));
+        emit showMessage(QString("Exported %1 image%2").arg(
+                             exportCount).arg(exportCount > 1 ? "s" : ""));
     }
 }
 

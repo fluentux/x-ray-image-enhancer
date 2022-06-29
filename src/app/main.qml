@@ -2,8 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
-import QtQuick.Controls.Material 2.0
-import XRayImageEnhancer;
+import QtQuick.Controls.Material
 
 ApplicationWindow {
     id: mainWindow
@@ -226,7 +225,6 @@ ApplicationWindow {
                 checked: model.selected
 
                 indicator: Rectangle {
-                    id: checkBoxRectangle
                     implicitWidth: 16
                     implicitHeight: 16
                     x: 2
@@ -260,7 +258,7 @@ ApplicationWindow {
         id: messageRectangle
         height: 25
         opacity: 0
-        color: "white"
+        color: "#00ccff"
         visible: opacity > 0
         anchors {
             top: parent.top
@@ -270,6 +268,7 @@ ApplicationWindow {
 
         Text {
             id: messageText
+            color: "#303030"
             anchors.centerIn: parent
         }
 
@@ -291,13 +290,13 @@ ApplicationWindow {
             target: mainModelContext
             function onShowMessage(message) {
                 messageText.text = message
-                messageText.color = "303030"
+                messageRectangle.color = "#00ccff"
                 messageRectangle.opacity = 1
                 messageAnimation.running = true
             }
             function onShowError(message) {
                 messageText.text = message
-                messageText.color = "red"
+                messageRectangle.color = "#ed6864"
                 messageRectangle.opacity = 1
                 messageAnimation.running = true
             }
