@@ -73,7 +73,7 @@ void MainModel::exportImages(QUrl url)
         try {
             auto image = imageProvider_->getImage(imageItem);
 
-            auto writeUrl = url.toString() + "/" +
+            auto writeUrl = url.toLocalFile() + "/" +
                 imageItem.url.fileName().section(".", 0, 0) +
                 ".png";
 

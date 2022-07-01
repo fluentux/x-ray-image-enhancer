@@ -19,17 +19,13 @@ void ImageWriter::write(std::unique_ptr<XrayImageAbstract>& image, std::string u
     // Create image matrix from pixels
     cv::Mat grayImage(image->height(), image->width(), imageType, image->getPixelData());
 
-    // Construct file path
-    const std::regex fileRegex("file:///");
-    auto filePath = std::regex_replace(url, fileRegex, "", std::regex_constants::format_first_only);
-
     // Write file
     bool success = false;
     if (!grayImage.empty()) {
-        success = cv::imwrite(filePath, grayImage);
+        success = cv::imwrite(url, grayImage);
     }
 
     if (!success) {
-        throw ImageWriterException("Failed to write image");
+        throw ImageWriterException("Failed to write image to " + url);
     }
 }

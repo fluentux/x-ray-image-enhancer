@@ -1,4 +1,3 @@
-
 find_package(OpenCV REQUIRED HINTS C:/opencv )
 include_directories(${OpenCV_INCLUDE_DIRS})
 
