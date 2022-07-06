@@ -7,9 +7,7 @@ The architecture of the application is separated into layers:
 - Infrastructure - persisting data
 - Presentation - user interface
 
-## Modules
-
-### Imaging (imaging)
+## Imaging (imaging)
 
 Imaging module contains domain objects related to imaging.
 
@@ -29,7 +27,7 @@ classDiagram
   }
 ```
 
-### Image Processing (imageprocessing)
+## Image Processing (imageprocessing)
 
 Image processing module contains algorithms for enhancing images.
 
@@ -56,7 +54,7 @@ classDiagram
   }
 ```
 
-### Image Storing (imagestoring)
+## Image Storing (imagestoring)
 
 Image storing module is responsible in reading and writing images.
 
@@ -78,13 +76,13 @@ classDiagram
   }
 ```
 
-### User interface (app)
+## User interface (app)
 
 User interface contains view for the application.
 
 Layer: Presentation
 
-## ImageItem
+### ImageItem
 
 Contains data about each loaded image.
 - ID of the image
@@ -92,23 +90,23 @@ Contains data about each loaded image.
 - Selected status
 - Image enhancements applied to image
 
-## ImageListModel
+### ImageListModel
 
 Abstract list model which handles image item list to be used in view.
 
-## ImageFilterProxyModel
+### ImageFilterProxyModel
 
 Model for filtering images for the view.
 
-## ImageProvider
+### ImageProvider
 
 Provides images for the user interface and exporting as requested. 
 
-## MainModel
+### MainModel
 
 Handles main application logic.
 
-### Unit tests (tests)
+## Unit tests (tests)
 
 Unit tests are written for domain objects and services.
 
